@@ -1,1 +1,1 @@
-# MEMCM
+# Microsoft Configuration Manager ( ConfigMgr )
