@@ -1,7 +1,7 @@
 ﻿#.NOTES
 #    ===========================================================================
 #     Created on:    3/21/2023 
-#     Modified on:   3/21/2023 
+#     Modified on:   3/21/2024 
 #     Created by:    Timmy Andersson
 #     Twitter:       @TimmyITdotcom
 #     Blog:          www.timmyit.com
@@ -9,7 +9,7 @@
 #    .DESCRIPTION
 #        Import Run Scripts. 
 #        Specify source path with the parameter -SourcePath
- 
+
 [CmdletBinding(DefaultParameterSetName = 'SourcePath')]
 param
 (
@@ -42,7 +42,7 @@ Set-Location $SitePath
                     {
 
                      $ScriptFile = $SourcePath + "\" + $Script.name
-                     New-CMScript -ScriptName "$($Script).name" -ScriptFile $ScriptFile  -Fast
+                     New-CMScript -ScriptName "$($Script)" -ScriptFile $ScriptFile  -Fast
                     }
 
   
