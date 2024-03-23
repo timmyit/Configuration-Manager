@@ -1,7 +1,7 @@
-﻿#.NOTES
+#.NOTES
 #===========================================================================
 #Created on:    3/21/2023
-#Modified on:   3/21/2023
+#Modified on:   4/21/2024
 #Created by:    Timmy Andersson
 #Twitter:       @TimmyITdotcom
 #Blog:          www.timmyit.com
@@ -47,4 +47,3 @@ foreach ($Script in $Scripts) {
  }
 
  }
-
