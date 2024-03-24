@@ -13,37 +13,31 @@
 [CmdletBinding(DefaultParameterSetName = 'DestinationPath')]
 param
 (
-[Parameter(Mandatory = $true,
-Position = 1)]
-$DestinationPath
+    [Parameter(Mandatory = $true,
+        Position = 1)]
+    [System.IO.DirectoryInfo]$DestinationPath
 )
-    Begin{
+Begin {
     $SiteCodeObjs = Get-WmiObject -Namespace "root\SMS" -Class SMS_ProviderLocation -ComputerName $env:COMPUTERNAME -ErrorAction Stop
-        foreach ($SiteCodeObj in $SiteCodeObjs)
-        {
-            if ($SiteCodeObj.ProviderForLocalSite -eq $true)
-                {
-                $SiteCode = $SiteCodeObj.SiteCode
-                }
+    foreach ($SiteCodeObj in $SiteCodeObjs) {
+        if ($SiteCodeObj.ProviderForLocalSite -eq $true) {
+            $SiteCode = $SiteCodeObj.SiteCode
         }
+    }
     $SitePath = $SiteCode + ":"
-    Import-module ($Env:SMS_ADMIN_UI_PATH.Substring(0, $Env:SMS_ADMIN_UI_PATH.Length - 5) + '\ConfigurationManager.psd1')
+    Import-Module ($Env:SMS_ADMIN_UI_PATH.Substring(0, $Env:SMS_ADMIN_UI_PATH.Length - 5) + '\ConfigurationManager.psd1')
 }
-PROCESS
-{
- 
-Set-Location $SitePath
-$Scripts = Get-CMScript 
+PROCESS { 
+    Set-Location $SitePath
+    $Scripts = Get-CMScript 
 
-    if (-not (Test-Path $DestinationPath))
-    {
-        new-item -Path $DestinationPath -ItemType Directory -Force
+    if (-not (Test-Path $DestinationPath)) {
+        New-Item -Path $DestinationPath -ItemType Directory -Force
     }
 
-foreach ($Script in $Scripts) {
-
-  $PS = [System.Text.Encoding]::unicode.GetString([System.Convert]::FromBase64String($($Script).Script))
-   Out-File -FilePath "$DestinationPath\$($Script.ScriptName).ps1" -InputObject $PS
- }
-
- }
+    foreach ($Script in $Scripts) {
+        $PS = [System.Text.Encoding]::Unicode.GetString([System.Convert]::FromBase64String($($Script).Script))
+        $ScriptName = $Script.ScriptName.Split([IO.Path]::GetInvalidFileNameChars()) -join '_'
+        Out-File -FilePath "$DestinationPath\$($ScriptName).ps1" -InputObject $PS
+    }
+}
